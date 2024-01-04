@@ -10,3 +10,9 @@ lots of work to query relationships
 
 - Strategy 3
 Prerequisite: You must have done the UI/UX planning first, down to the content of each screen
+
+
+Whenever you reopen the gitpod server. There is a need to run this piece of code 'sudo dpkg -i mongosh.deb' in the terminal 
+
+To connect to the mongo database, you will need to use the connection string under database and put the data string into the terminal followed by the passward 'haha123'
+
