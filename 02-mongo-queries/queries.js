@@ -169,3 +169,35 @@ db.listingsAndReviews.find({
     "address.country":1, 
     'beds':1
 })
+
+// Find all listing that have first review before 2019
+// Date must be given in the ISO standard - YYYY--MM--DD (Year - Month - Date)
+db.listingsAndReviews.find({
+    "first_review":{
+        "$lte":ISODate("2018-12-31")
+    }
+},{
+    "name":1,
+    "first_review":1
+})
+
+// Count the results
+// Show the total number of listings 
+db.listingsAndReviews.find().count();
+
+// Find by regular expression
+// Find all the listing that have the string "Spacious" in the name 
+db.listingsAndReviews.find({
+    'name':{
+        "$regex":"spacious","$options":"i"
+    }
+},{
+    'name':1
+})
+
+
+// Find a document by its ID
+Use sameple_restaurants; 
+db.restaurants.find({
+    '_id':ObjectId('5eb3d668b31de5d588f4292a')
+})
