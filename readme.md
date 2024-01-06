@@ -17,4 +17,8 @@ Whenever you reopen the gitpod server. There is a need to run this piece of code
 To connect to the mongo database, you will need to use the connection string under database and put the data string into the terminal followed by the passward 'haha123'
 You should be seeing "Atlas atlas-fi1sr9-shard-0 [primary]" when you are connected to the database. 
 
+To get the connection string, you will need to go under 'database' then under 'database deployments' and then 'connect' and 'shell' - the connection string will be there
+
 To exit the database key in "control+c" in the terminal
+
+Go to browse collections to see all the sample databases
