@@ -59,6 +59,9 @@ db.listingsAndReviews.find({
     "address.country":1
 })
 
+// $gte is 'greater than equal' 
+// $lte is 'less than equal' 
+
 // Find all listing where there is 3 or more bedrooms 
 db.listingsAndReviews.find({
     "bedrooms": {

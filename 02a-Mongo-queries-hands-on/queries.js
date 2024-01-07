@@ -23,27 +23,39 @@ db.restaurants.find({
 
 // 3. Find all restaurants that are located at the street "Stillwell Avenue"
 db.restaurants.find({
-    'cuisine':'American',
-    'borough':'Bronx'
+    'address.street':'Stillwell Avenue'
 },{
-    'cuisine':1,
     'name':1,
-    'borough':1
+    'address.street':1
 })
 
 
 //NEXT SET OF QNS
-// USE THE sample_mflix** **DATABASE FOR THE QUESTIONS BELOW**
+// USE THE sample_mflix **DATABASE FOR THE QUESTIONS BELOW**
 
 // From the *movies* collection
 
 // 1. Count how many movies there are
+db.movies.count();
+
 // 2. Count how many movies there are released before the year 2000
+
+
 // 3. Show the first ten titles of movies produced in the USA
+
+
 // 4. Show the first ten titles of movies not produced in the USA
+
+
 // 5. Show movies that have at least 3 wins in the awards object
+
+
 // 6. Show movies that have at least 3 nominations in the awards object
+
+
 // 7. Show movies that cast Tom Cruise
+
+
 // 8. Show movies that are directed by Charles Chaplin
 
 
