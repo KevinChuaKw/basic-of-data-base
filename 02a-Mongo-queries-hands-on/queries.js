@@ -37,12 +37,23 @@ db.restaurants.find({
 
 // 1. Count how many movies there are
 db.movies.count();
+// Total movies is 21349 
 
 // 2. Count how many movies there are released before the year 2000
-
+db.movies.count({
+    'year':{
+        $lt:2000
+    }
+})
+// Total movies before 2000 is 8745
 
 // 3. Show the first ten titles of movies produced in the USA
-
+db.movies.find({
+    'countries.0':'USA'
+},{
+    'title':1,
+    'countries.0':1
+}).limit(10)
 
 // 4. Show the first ten titles of movies not produced in the USA
 
