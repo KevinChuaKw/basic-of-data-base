@@ -1,13 +1,35 @@
 // USE THE sample_resturants DATABASE FOR THE QUESTIONS BELOW
 
 // 1. Find all restaurants that specialize in *hamburgers* cuisine
+db.restaurants.find({
+    'cuisine':'Hamburgers'
+},{
+    'cuisine':1,
+    'name':1
+})
 
 
-// 2. Find all restaurants that specialize in *American* cuisine and are in the Bronx borough.
+// 2. Find all restaurants that specialize in *American* cuisine 
+// and are in the Bronx borough.
+db.restaurants.find({
+    'cuisine':'American',
+    'borough':'Bronx'
+},{
+    'cuisine':1,
+    'name':1,
+    'borough':1
+})
 
 
 // 3. Find all restaurants that are located at the street "Stillwell Avenue"
-
+db.restaurants.find({
+    'cuisine':'American',
+    'borough':'Bronx'
+},{
+    'cuisine':1,
+    'name':1,
+    'borough':1
+})
 
 
 //NEXT SET OF QNS
