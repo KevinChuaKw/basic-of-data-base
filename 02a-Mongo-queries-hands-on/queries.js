@@ -49,17 +49,31 @@ db.movies.count({
 
 // 3. Show the first ten titles of movies produced in the USA
 db.movies.find({
-    'countries.0':'USA'
+    'countries':'USA'
 },{
     'title':1,
-    'countries.0':1
+    'countries':1
 }).limit(10)
 
 // 4. Show the first ten titles of movies not produced in the USA
-
+db.movies.find({
+    'countries':{
+        '$ne':'USA'
+    }
+},{
+    'title':1,
+    'countries':1
+}).limit(10)
 
 // 5. Show movies that have at least 3 wins in the awards object
-
+db.movies.find({
+    'awards.wins':{
+        '$gte':3
+    }
+},{
+    'title':1,
+    'awards.wins':1
+})
 
 // 6. Show movies that have at least 3 nominations in the awards object
 
@@ -75,14 +89,27 @@ db.movies.find({
 
 // 1. Count how many records there are of wind speed with rate higher than 5
 
+
 // 2. Count how many records there are of wind speed with rate higher than 5 but is not 999.9
+
+
 
 // NEXT SET OF QNS
 // USE THE sample_supplies DATABASE FOR THE QUESTIONS BELOW**
 
 // 1. Count how many sales includes laptop
+
+
 // 2. Count how many sales includes laptop and is made at Denver
+
+
 // 3. Show the sales that are made at Denver **OR** Seattle.
+
+
 // 4. Show the store location where the user with the email address "[beecho@wic.be](mailto:beecho@wic.be)" has purchased at
+
+
 // 5. Show the store location of all sales where coupon is used and the customer's satisfaction is 4 or above
+
+
 // 6. Show the store location and items sold for sales where more than 4 laptops are sold

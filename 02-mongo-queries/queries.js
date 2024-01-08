@@ -61,6 +61,7 @@ db.listingsAndReviews.find({
 
 // $gte is 'greater than equal' 
 // $lte is 'less than equal' 
+// $ne is 'not equal' 
 
 // Find all listing where there is 3 or more bedrooms 
 db.listingsAndReviews.find({
