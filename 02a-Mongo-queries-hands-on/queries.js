@@ -76,29 +76,63 @@ db.movies.find({
 })
 
 // 6. Show movies that have at least 3 nominations in the awards object
-
+db.movies.find({
+    'awards.nominations':{
+        '$gte':3
+    }
+},{
+    'title':1,
+    'awards.nominations':1
+})
 
 // 7. Show movies that cast Tom Cruise
+db.movies.find({
+    'cast':'Tom Cruise'
+},{
+    'title':1,
+    'cast':1
+})
 
 
 // 8. Show movies that are directed by Charles Chaplin
-
+db.movies.find({
+    'directors':'Charles Chaplin'
+},{
+    'title':1,
+    'directors':1
+})
 
 // NEXT SET OF QNS
 // USE THE sample_weatherdata DATABASE FOR THE QUESTIONS BELOW**
 
 // 1. Count how many records there are of wind speed with rate higher than 5
+db.data.count({
+    'wind.speed.rate':{
+        $gt:5
+    }
+})
+// Total records with wind speed higher than 5 is 7027
 
-
-// 2. Count how many records there are of wind speed with rate higher than 5 but is not 999.9
-
+// 2. Count how many records there are of wind speed with rate higher 
+// than 5 but is not 999.9
+db.data.count({
+    'wind.speed.rate':{
+        $gt:5,
+        $ne:999.9
+    }
+})
+// Total records with wind speed higher than 5 is 6699 
 
 
 // NEXT SET OF QNS
 // USE THE sample_supplies DATABASE FOR THE QUESTIONS BELOW**
 
 // 1. Count how many sales includes laptop
-
+db.sales.count({
+    'items':'laptop'
+})
+// Total sales that include laptop is 
+// This data set is questionable
 
 // 2. Count how many sales includes laptop and is made at Denver
 
