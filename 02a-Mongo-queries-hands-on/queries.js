@@ -108,7 +108,7 @@ db.movies.find({
 // 1. Count how many records there are of wind speed with rate higher than 5
 db.data.count({
     'wind.speed.rate':{
-        $gt:5
+        "$gt":5
     }
 })
 // Total records with wind speed higher than 5 is 7027
@@ -117,8 +117,8 @@ db.data.count({
 // than 5 but is not 999.9
 db.data.count({
     'wind.speed.rate':{
-        $gt:5,
-        $ne:999.9
+        "$gt":5,
+        "$ne":999.9
     }
 })
 // Total records with wind speed higher than 5 is 6699 
@@ -129,21 +129,64 @@ db.data.count({
 
 // 1. Count how many sales includes laptop
 db.sales.count({
-    'items':'laptop'
+    'items.name':'laptop'
 })
-// Total sales that include laptop is 
-// This data set is questionable
+// 2271
 
 // 2. Count how many sales includes laptop and is made at Denver
-
+db.sales.count({
+    'items.name':'laptop',
+    'storeLocation':'Denver'
+})
+// 685
 
 // 3. Show the sales that are made at Denver **OR** Seattle.
+db.sales.find({
+    'storeLocation':{
+        $in:['Denver','Seattle']}
+},{
+    'items.name':1,
+    'storeLocation':1
+}).count()
+// 2683
 
 
-// 4. Show the store location where the user with the email address "[beecho@wic.be](mailto:beecho@wic.be)" has purchased at
+// 4. Show the store location where the user with the email address 
+// "[beecho@wic.be]" has purchased at
+db.sales.find({
+    'customer.email':'beecho@wic.be'
+},{
+    'storeLocation':1,
+    'customer.email':1
+})
 
+// 5. Show the store location of all sales where coupon 
+// is used and the customer's satisfaction is 4 or above
+db.sales.find({
+    'customer.satisfaction':{
+        "$gte":4
+    }, 
+    'couponUsed': true 
+},{
+    'storeLocation':1,
+    'customer.satisfaction':1, 
+    'couponUsed':1
+})
 
-// 5. Show the store location of all sales where coupon is used and the customer's satisfaction is 4 or above
+// 6. Show the store location and items sold for sales 
+// where more than 4 laptops are sold
+db.sales.find({
+    'items':{
+        "$elemMatch":{
+           'name':'laptop',
+           'quantity':{
+                "$gt":4
+           } 
+    },
+    } 
+},{
+    'storeLocation':1,
+    'items':1
+})
 
-
-// 6. Show the store location and items sold for sales where more than 4 laptops are sold
+// The count for this would be 443
