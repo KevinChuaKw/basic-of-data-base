@@ -19,6 +19,9 @@ To connect to the mongo database, you will need to use the connection string und
 You should be seeing "Atlas atlas-fi1sr9-shard-0 [primary]" when you are connected to the database. 
 
 To get the connection string, you will need to go under 'database' then under 'database deployments' and then 'connect' and 'shell' - the connection string will be there
+An alternate way to get this is going to go to 'database' and under 'database deplyments' and look for 'drivers'. The connection string is there
+
+mongodb+srv://root:<password>@testing-database-for-ke.m639ryv.mongodb.net/?retryWrites=true&w=majority
 
 To exit the database key in "control+c" in the terminal
 
