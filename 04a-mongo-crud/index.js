@@ -1,20 +1,29 @@
 const express = require("express");
-require ("dotenv").config(); 
-const hbs = require('hbs'); 
-const app = express(); 
+const {ObjectId} = require('mongodb');
+
+// setup HBS and template inheritance using wax-on
+const hbs = require('hbs');
 const waxOn = require('wax-on');
-waxOn.setLayoutPath('./views/layouts'); 
+waxOn.setLayoutPath("./views/layouts");
 waxOn.on(hbs.handlebars);
+const helpers = require('handlebars-helpers')({
+    'handlebars': hbs.handlebars
+})
+
+// req.body will be always be undefined we app.use express.urlencoded
 app.use(express.urlencoded({
     extend:false
 }))
-const {ObjectId} = require('mongodb');
+
+require ("dotenv").config();
+
+const app = express();
+app.set("view engine", "hbs");
 
 // make sure to put `./` to specify
 // that we to require from the `mongoUtil.js`
 // that is in the same directory as the current file (i.e, index.js)
 const {connect} = require("./mongoUtil") // the './' is very important you need put this
-app.set("view engine", "hbs");
 
 // usually in the industry, if the variable name is in full caps
 // this is a global constant
@@ -72,6 +81,7 @@ async function main(){
         }); 
 
     }
+
 main();
 
 app.listen(3000, function(){ 
