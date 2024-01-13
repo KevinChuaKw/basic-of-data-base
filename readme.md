@@ -23,6 +23,11 @@ An alternate way to get this is going to go to 'database' and under 'database de
 
 mongodb+srv://root:<password>@testing-database-for-ke.m639ryv.mongodb.net/?retryWrites=true&w=majority
 
+KEY THING TO NOTE 
+When you restart your terminal after a long time. You might have to reinstall the package for dotenv again. You can do this by keying in 'yarn add dotenv' and followed by creating a '.env' file again to place the connection string within the .env file. 
+
+MONGO_URL="mongodb+srv://root:haha123@testing-database-for-ke.m639ryv.mongodb.net/?retryWrites=true&w=majority"
+
 To exit the database key in "control+c" in the terminal
 
 Go to browse collections to see all the sample databases

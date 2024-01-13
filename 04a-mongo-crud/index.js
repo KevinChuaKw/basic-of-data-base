@@ -10,15 +10,15 @@ const helpers = require('handlebars-helpers')({
     'handlebars': hbs.handlebars
 })
 
+const app = express();
+app.set("view engine", "hbs");
+
 // req.body will be always be undefined we app.use express.urlencoded
 app.use(express.urlencoded({
     extend:false
 }))
 
 require ("dotenv").config();
-
-const app = express();
-app.set("view engine", "hbs");
 
 // make sure to put `./` to specify
 // that we to require from the `mongoUtil.js`
@@ -36,13 +36,14 @@ async function main(){
             // We want to retrieve the documents from the collection
             // and convert it to and array of JSON objects 
             const foodRecords = await db.collection(COLLECTION)
-                                        .find()
-                                        .toArray();
-            res.render('allFoodRecords',{
+                .find()
+                .toArray();
+            res.render('all-food-records',{
                 'foodRecords': foodRecords
             })
         })
         
+        // Display the from to add food
         app.get('/add-food', function(req,res){
             res.render("add-food"); 
         })
@@ -56,6 +57,8 @@ async function main(){
                 if (!Array.isArray(tags))
                     tags = [tags]; 
             } else {
+                // if the tag is undefined set to an empty aray (meaning no
+                // tag selected)
                 tags = []
             }
 
@@ -69,16 +72,16 @@ async function main(){
             res.redirect('/'); 
         })
 
-        app.get("/delete-food/:foodRecordId", async function(res,req){
-            //findOne will return on result instead of an array
-            const foodRecord = await db.collection(COLLECTION).findOne({
-                "_id": new ObjectId(req.params.foodRecordId)
-            }); 
+    //     app.get("/delete-food/:foodRecordId", async function(res,req){
+    //         //findOne will return on result instead of an array
+    //         const foodRecord = await db.collection(COLLECTION).findOne({
+    //             "_id": new ObjectId(req.params.foodRecordId)
+    //         }); 
 
-            res.render("confirm-delete",{
-                foodRecord
-            })
-        }); 
+    //         res.render("confirm-delete",{
+    //             foodRecord
+    //         })
+    //     }); 
 
     }
 
@@ -86,4 +89,4 @@ main();
 
 app.listen(3000, function(){ 
     console.log("Server has started") 
-   });
+   })
