@@ -24,7 +24,11 @@ An alternate way to get this is going to go to 'database' and under 'database de
 mongodb+srv://root:<password>@testing-database-for-ke.m639ryv.mongodb.net/?retryWrites=true&w=majority
 
 KEY THING TO NOTE 
-When you restart your terminal after a long time. You might have to reinstall the package for dotenv again. You can do this by keying in 'yarn add dotenv' and followed by creating a '.env' file again to place the connection string within the .env file. 
+When you restart your terminal after a long time. 
+
+You might have to reinstall the package for dotenv again. You can do this by keying in 'yarn add dotenv' and followed by creating a '.env' file again to place the connection string within the .env file. 
+
+You will need to create the .env file again because you are opening the workspace from github (which is the version that is uploaded without the .env file because it was in .gitignore). If you open the workspace from github, the .env file will be there. 
 
 MONGO_URL="mongodb+srv://root:haha123@testing-database-for-ke.m639ryv.mongodb.net/?retryWrites=true&w=majority"
 
