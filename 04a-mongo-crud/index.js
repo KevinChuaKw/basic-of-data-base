@@ -1,6 +1,9 @@
 const express = require("express");
 const { ObjectId } = require('mongodb');
 
+const app = express();
+app.set("view engine", "hbs");
+
 // setup HBS and template inheritance using wax-on
 const hbs = require('hbs');
 const waxOn = require('wax-on');
@@ -10,8 +13,6 @@ const helpers = require('handlebars-helpers')({
     'handlebars': hbs.handlebars
 })
 
-const app = express();
-app.set("view engine", "hbs");
 
 // req.body will be always be undefined we app.use express.urlencoded
 app.use(express.urlencoded({
@@ -33,12 +34,14 @@ async function main() {
     const db = await connect(process.env.MONGO_URL, 'sctp01_cico');
     // Display the form 
     app.get('/', async function (req, res) {
+   
         try {
             // We want to retrieve the documents from the collection
             // and convert it to and array of JSON objects 
             const foodRecords = await db.collection(COLLECTION)
                 .find()
                 .toArray();
+            
             res.render('all-food-records', {
                 'foodRecords': foodRecords
             })

@@ -7,6 +7,7 @@ const MongoClient = require("mongodb").MongoClient;
 async function connect(mongoURL, databaseName) {
     const client = await MongoClient.connect(mongoURL);
     const db = client.db(databaseName);
+    console.log("mongo db connected")
     return db;
 }
 
