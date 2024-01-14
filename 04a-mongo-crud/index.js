@@ -34,14 +34,14 @@ async function main() {
     const db = await connect(process.env.MONGO_URL, 'sctp01_cico');
     // Display the form 
     app.get('/', async function (req, res) {
-   
+
         try {
             // We want to retrieve the documents from the collection
             // and convert it to and array of JSON objects 
             const foodRecords = await db.collection(COLLECTION)
                 .find()
                 .toArray();
-            
+
             res.render('all-food-records', {
                 'foodRecords': foodRecords
             })
@@ -82,19 +82,24 @@ async function main() {
         res.redirect('/');
     })
 
-    //   app.get("/delete-food/:foodRecordId", async function(res,req){
-    //         //findOne will return on result instead of an array
-    //         const foodRecord = await db.collection(COLLECTION).findOne({
-    //             "_id": new ObjectId(req.params.foodRecordId) // need to take note
-    // to put 'new' in front 
-    // of 'ObjectId' from now 
-    // onwards
-    //         }); 
+    app.get("/delete-food/:foodRecordId", async function (req, res) {
+        //findOne will return on result instead of an array
+        const foodRecord = await db.collection(COLLECTION).findOne({
+            "_id": new ObjectId(req.params.foodRecordId)
+            // need to take note to put 'new' in front of 'ObjectId' from now onwards
+        });
 
-    //         res.render("confirm-delete",{
-    //             foodRecord
-    //         })
-    //     }); 
+        res.render("confirm-delete", {
+            foodRecord
+        })
+    });
+
+    app.post("/delete-food/:foodRecordId", async function (req,res){
+        await db.collection(COLLECTION).deleteOne({
+            '_id': new ObjectId (req.params.foodRecordId)
+        })
+        res.redirect("/"); 
+    })
 
 }
 
