@@ -1120,7 +1120,7 @@ hasown@^2.0.0:
 
 hbs@^4.2.0:
   version "4.2.0"
-  resolved "https://registry.npmjs.org/hbs/-/hbs-4.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/hbs/-/hbs-4.2.0.tgz#10e40dcc24d5be7342df9636316896617542a32b"
   integrity sha512-dQwHnrfWlTk5PvG9+a45GYpg0VpX47ryKF8dULVd6DtwOE6TEcYQXQ5QM6nyOx/h7v3bvEQbdn19EDAcfUAgZg==
   dependencies:
     handlebars "4.7.7"

@@ -101,6 +101,47 @@ async function main() {
         res.redirect("/"); 
     })
 
+    app.get('/update-food/:foodRecordId', async function(req,res){
+        // findOne will return one result instead of an array
+        const foodRecord = await db.collection(COLLECTION).findOne({
+            "_id": new ObjectId(req.params.foodRecordId)
+        }); 
+        res.render('update-food',{
+            foodRecord
+        })
+    })
+
+    app.post('/update-food/:foodRecordId', async function(req,res){
+        // anything retrieved is from req.body is a string, not number
+        const foodName = req.body.foodName;
+        const calories = req.body.calories; 
+        let tags = req.body.tags;
+        if (tags){
+            // check if tags is already an array or a string
+            if (!Array.isArray(tags)){
+                tags = [tags];
+            } 
+        } else {
+            // if tag is undefined set to an empty array (meaning no tags
+            // selected)
+            tags = []; 
+        } 
+
+        const results = await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(req.params.foodRecordId)
+        }, {
+            "$set":{
+                "foodName": foodName,
+                "calories": Number(calories),
+                "tags": tags
+            }
+        }); 
+        console.log(results);
+
+        res.redirect('/'); 
+    })
+
+    
 }
 
 // Notes on TRY CATCH 
