@@ -141,6 +141,54 @@ async function main() {
         res.redirect('/'); 
     })
 
+    app.get("/add-note/:foodid", async function(req,res){
+        try {
+            const foodId = req.params.foodid;
+            const foodRecord = await db.collection(COLLECTION).findOne({
+                "_id": new ObjectId(req.params.foodRecordId)
+            }); 
+            if (foodRecord){
+                res.render('add-note',{
+                    'food': foodRecord
+                })
+            } else {
+                // error handling
+                res.status(404).send("Food record not found")
+            }
+        } catch (e) {
+            // catching the exception (when there is an error, the program counter
+            // will first move in the first line of the catch block)
+            res.status(500).send("Sorry something went wrong. Please try again later")
+        }
+    }); 
+
+    app.post("/add-note/:foodid", async function (req,res){
+        const foodId = req.params.foodid; 
+        const noteContent = req.body.noteContent;
+        const response = await db.collection(COLLECTION)
+                                .updateOne({
+                                    "_id": new ObjectId(foodId)
+                                },{
+                                    "$push":{
+                                        "notes":{
+                                            "_id": new ObjectId(),
+                                            "content": noteContent
+                                        }
+                                    }
+                                })
+        res.redirect("/view-food/" + foodId); 
+    })
+
+    app.get("view-food/:foodid", async function(req,res){
+        const foodRecord = await db.collection(COLLECTION).findOne({
+            "_id": new ObjectId(req.params.foodRecordId)
+        }); 
+        res.render('view-food', {
+            'food': foodRecord
+        })
+    })
+
+
     
 }
 
