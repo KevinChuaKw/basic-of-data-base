@@ -179,7 +179,7 @@ async function main() {
         res.redirect("/view-food/" + foodId); 
     })
 
-    app.get("view-food/:foodid", async function(req,res){
+    app.get("/view-food/:foodid", async function(req,res){
         const foodRecord = await db.collection(COLLECTION).findOne({
             "_id": new ObjectId(req.params.foodRecordId)
         }); 
@@ -192,16 +192,6 @@ async function main() {
     
 }
 
-// Notes on TRY CATCH 
-// When you are using external softwares and plug ins
-// When accounting for errors that are not within your control
-// To use a try catch to account for instead
-// If there is a specific line that is giving an error
-// Javascript would be going to the catch line to throw out the error accordingly
-// Expected to put try catch for the module project
-
-// adding a sub document is alwasys updateOne
-// insertOne / deleteOne is for changing of the main document
 
 main();
 

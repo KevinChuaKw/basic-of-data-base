@@ -34,4 +34,15 @@ MONGO_URL="mongodb+srv://root:haha123@testing-database-for-ke.m639ryv.mongodb.ne
 
 To exit the database key in "control+c" in the terminal
 
-Go to browse collections to see all the sample databases
+Go to browse collections to see all the sample databases 
+
+Notes on TRY CATCH 
+When you are using external softwares and plug ins
+When accounting for errors that are not within your control
+To use a try catch to account for instead
+If there is a specific line that is giving an error
+Javascript would be going to the catch line to throw out the error accordingly
+Expected to put try catch for the module project
+
+adding a sub document is alwasys updateOne
+insertOne / deleteOne is for changing of the main document
