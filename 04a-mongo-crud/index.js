@@ -144,8 +144,9 @@ async function main() {
         try {
             const foodId = req.params.foodid;
             const foodRecord = await db.collection(COLLECTION).findOne({
-                "_id": new ObjectId(req.params.foodRecordId)
+                "_id": new ObjectId(foodId)
             }); 
+            
             if (foodRecord){
                 res.render('add-note',{
                     'food': foodRecord
@@ -179,8 +180,9 @@ async function main() {
     })
 
     app.get("/view-food/:foodid", async function(req,res){
+        const foodId = req.params.foodid;
         const foodRecord = await db.collection(COLLECTION).findOne({
-            "_id": new ObjectId(req.params.foodRecordId)
+            "_id": new ObjectId(foodId)
         }); 
         res.render('view-food', {
             'food': foodRecord
