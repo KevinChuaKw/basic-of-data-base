@@ -13,7 +13,6 @@ const helpers = require('handlebars-helpers')({
     'handlebars': hbs.handlebars
 })
 
-
 // req.body will be always be undefined we app.use express.urlencoded
 app.use(express.urlencoded({
     extend: false
