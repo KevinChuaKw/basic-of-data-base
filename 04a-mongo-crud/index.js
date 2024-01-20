@@ -195,10 +195,27 @@ async function main() {
         })
     })
 
+    app.get("/food/:foodid/delete-note/:noteid", async function (req,res){
+        const {foodid, noteid} = req.params; 
+        // const foodid = req.params.foodid;
+        // const noteid = req.params.noteid; 
 
+        await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(foodid)
+        },{
+            "$pull":{
+                "notes":{
+                    "_id":new ObjectId(noteid)
+                }
+            }
+        })
+
+        res.redirect("/view-food/" + foodid);
+    })
     
-}
+    
 
+}
 
 main();
 
