@@ -29,6 +29,12 @@ const { connect } = require("./mongoUtil") // the './' is very important you nee
 // this is a global constant
 const COLLECTION = "foodRecords";
 
+// When making a request to the URL. This can be via a few means
+// .query .body .params
+// .query is when you would want to search for items in the URL
+// .body is when you want to do POST and PUT
+// .params is when you are requesting route parameters in the URL
+
 async function main() {
     const db = await connect(process.env.MONGO_URL, 'sctp01_cico');
     // Display the form 
