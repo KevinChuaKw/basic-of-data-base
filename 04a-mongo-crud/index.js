@@ -213,7 +213,40 @@ async function main() {
         res.redirect("/view-food/" + foodid);
     })
     
-    
+    app.get("/food/:foodid/edit-note/:noteid", async function(req,res){
+        const {foodid, noteid} = req.params;
+        const foodRecord = await db.collection(COLLECTION).findOne({
+            '_id': new ObjectId(foodid)
+        },{
+            'projection':{
+                "foodName":1,
+                "notes":{
+                    "$elemMatch":{
+                        "_id":new ObjectId(noteid)
+                    }
+                }
+            }
+        }); 
+        // This is to show what is the items to render from projection - which we are 
+        // able to edit in the 'edit-note' page
+        res.render("edit-note",{
+            "foodName": foodRecord.foodName,
+            'note':foodRecord.notes[0]
+        }) 
+    })
+
+    app.post("/food/:foodid/edit-note/:noteid", async function(req,res){
+        const {foodid,noteid} = req.params; 
+        await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(foodid),
+            "notes._id": new ObjectId(noteid)
+        },{
+            "$set":{
+                "notes.$.content": req.body.noteContent
+            }
+        })
+        res.redirect('/view-food/' + foodid)
+    }); 
 
 }
 
