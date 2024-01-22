@@ -1,48 +1,38 @@
 const express = require("express");
+const cors = require('cors');
 const { ObjectId } = require('mongodb');
-
-const app = express();
-app.set("view engine", "hbs");
-
-// setup HBS and template inheritance using wax-on
-const hbs = require('hbs');
-const waxOn = require('wax-on');
-waxOn.setLayoutPath("./views/layouts");
-waxOn.on(hbs.handlebars);
-const helpers = require('handlebars-helpers')({
-    'handlebars': hbs.handlebars
-})
-
-// req.body will be always be undefined we app.use express.urlencoded
-app.use(express.urlencoded({
-    extend: false
-}))
-
+const userRoutes = require('./users');
+app.use(express.json()); 
+app.use(cors()); 
 require("dotenv").config();
-
-// make sure to put `./` to specify
-// that we to require from the `mongoUtil.js`
-// that is in the same directory as the current file (i.e, index.js)
 const { connect } = require("./mongoUtil") // the './' is very important you need put this
+const { authenticateToken } = require('./middleware'); 
 
-// usually in the industry, if the variable name is in full caps
-// this is a global constant
-const COLLECTION = "foodRecords";
-
-// When making a request to the URL. This can be via a few means
-// .query .body .params
-// .query is when you would want to search for items in the URL
-// .body is when you want to do POST and PUT
-// .params is when you are requesting route parameters in the URL
+const COLLECTION = "accountRecords";
+const mongoUrl = process.env.MONGO_URL; 
 
 async function main() {
-    const db = await connect(process.env.MONGO_URL, 'sctp01_cico');
+    const db = await connect(mongoUrl, 'sctp01_cico');
+
+    async function findExpenseById(expenseId){
+        const expenseRecord = await db.collection(COLLECTION).findOne({
+            "_id": new ObjectId(expenseId)
+        }); 
+        return expenseRecord; 
+    }
+
+    app.get('/view_expenses', async function(req,res) {
+        const user = req.body.user; 
+        
+    })
+
+
+
+
     // Display the form 
     app.get('/', async function (req, res) {
 
         try {
-            // We want to retrieve the documents from the collection
-            // and convert it to and array of JSON objects 
             const foodRecords = await db.collection(COLLECTION)
                 .find()
                 .toArray();
@@ -248,6 +238,7 @@ async function main() {
         res.redirect('/view-food/' + foodid)
     }); 
 
+    app.use('/users', userRoutes); 
 }
 
 main();
