@@ -1,15 +1,29 @@
 const express = require("express");
-const cors = require('cors'); // cross origin resources sharing
 const { ObjectId } = require('mongodb');
-const userRoutes = require("./users");
+
+const app = express();
+app.set("view engine", "hbs");
+
+// setup HBS and template inheritance using wax-on
+const hbs = require('hbs');
+const waxOn = require('wax-on');
+waxOn.setLayoutPath("./views/layouts");
+waxOn.on(hbs.handlebars);
+const helpers = require('handlebars-helpers')({
+    'handlebars': hbs.handlebars
+})
 
 // req.body will be always be undefined we app.use express.urlencoded
-app.use(express.json());
+app.use(express.urlencoded({
+    extend: false
+}))
 
 require("dotenv").config();
 
-const { connect } = require("./mongoUtil") 
-// const {authenticateToken} = require('./middlewares');
+// make sure to put `./` to specify
+// that we to require from the `mongoUtil.js`
+// that is in the same directory as the current file (i.e, index.js)
+const { connect } = require("./mongoUtil") // the './' is very important you need put this
 
 // usually in the industry, if the variable name is in full caps
 // this is a global constant
