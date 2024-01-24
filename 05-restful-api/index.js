@@ -38,45 +38,45 @@ async function main() {
     app.post('/expenses', async function (req, res) {
         const user = req.body.user;
         const expenseAmount = req.body.expenseAmount;
-
-        if (!user) {
-            res.status(400);
+        
+        if (!user){
+            res.status(400); 
             res.json({
-                "error": "Please enter user"
+                "error":"Please enter user"
             })
-            return;
+            return; 
         }
-
-        if (isNaN(expenseAmount) || expenseAmount < 0) {
-            res.status(400);
+        if (isNaN(expenseAmount)|| expenseAmount < 0) {
+            res.json(400); 
             res.json({
-                "error": "Please enter expense amount and make sure it is greater than 0"
-            })
-            return;
-        }
-
-        let tags = req.body.tags;
-        if (tags) {
-            if (!Array.isArray(tags)) {
-                tags = [tags];
+                'error':"Please enter expense amount correctly"
+            }); 
+            return; 
+        } 
+        
+        let tags = req.body.tags; 
+        if (tags){
+            if(!Array.isArray(tags)){
+                tags= [tags]; 
             }
         } else {
-            tags = [];
+            tags=[]; 
         }
-
+    
         const results = await db.collection(COLLECTION).insertOne({
             "user": user,
             "expenseAmount": Number(expenseAmount),
             "tags": tags
         })
-
+        
         res.json({
-            "message": "Added successfully",
+            "message":"Added successfully", 
             "results": results
         })
 
-    })
+    }); 
 
+    // deleting from the data base
     app.delete("/expense/:expenseRecordId", async function(req,res){
         const results = await db.collection(COLLECTION).deleteOne({
             "_id": new ObjectId(req.params.expenseRecordId)
@@ -84,6 +84,32 @@ async function main() {
         res.json({
             results
         });
+    })
+
+    // updating the database
+    app.put("/expense/:expenseRecordId", async function (req,res){
+        const user = req.body.user;
+        const expenseAmount = req.body.expenseAmount;
+        let tags = req.body.tags; 
+        if (tags){
+            if (!Array.isArray(tags)){
+                tags = [tags]; 
+            }
+        } else {
+            tags =[]; 
+        }
+
+        const results = await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(req.params.expenseRecordId)
+        },{
+            "$set":{
+                "user": user,
+                "expenseAmount": Number(expenseAmount),
+                "tags": tags
+            }
+        }); 
+
+        res.json(results); 
     })
 
     
