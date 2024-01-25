@@ -123,7 +123,7 @@ async function main() {
     // Adding note within the entry (embeding)
     // 
     app.post("/expense/:expenseid/note", async function (req,res){
-        const expenseId = req.body.userId;
+        const expenseId = req.body.expenseId;
         const noteContent = req.body.noteContent;
         const response = await db.collection(COLLECTION).updateOne({
             "_id": new ObjectId(expenseId)
