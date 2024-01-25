@@ -15,14 +15,15 @@ const mongoUrl = process.env.MONGO_URL;
 async function main() {
     const db = await connect(mongoUrl, 'sctp01_cico');
 
-    // async function findExpenseById(expenseId){
-    //     const expenseRecord = await db.collection(COLLECTION).findOne({
-    //         "_id": new ObjectId(expenseId)
-    //     }); 
-    //     return expenseRecord; 
-    // }
+    async function findExpenseById(expenseId){
+        const expenseRecord = await db.collection(COLLECTION).findOne({
+            "_id": new ObjectId(expenseId)
+        }); 
+        return expenseRecord; 
+    }
 
     // Reading from the databaseName
+    // Tested and works
     app.get('/showAll_expenses', async function (req, res) {
 
         const expenseRecords = await db.collection(COLLECTION)
@@ -35,6 +36,7 @@ async function main() {
     });
 
     // Adding to the database 
+    // Tested and works 
     app.post('/expenses', async function (req, res) {
         const user = req.body.user;
         const expenseAmount = req.body.expenseAmount;
@@ -77,11 +79,13 @@ async function main() {
     }); 
 
     // deleting from the data base
+    // Tested and works
     app.delete("/expense/:expenseRecordId", async function(req,res){
         const results = await db.collection(COLLECTION).deleteOne({
             "_id": new ObjectId(req.params.expenseRecordId)
         })
         res.json({
+            "message":"Deleted successfully", 
             results
         });
     })
@@ -112,7 +116,33 @@ async function main() {
         res.json(results); 
     })
 
-    
+    // Adding note within the entry (embeding)
+    app.post("/expense/:expenseid/note", async function (req,res){
+        const userId = req.body.userid;
+        const noteContent = req.body.noteContent;
+        const response = await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(userId)
+        },{
+            "$push":{
+                "notes": {
+                    "_id": new ObjectId(),
+                    "content": noteContent 
+                }
+            }
+        })
+        res.json({
+            'message':"note added successfully",
+            results: response
+        })
+    })
+
+    // displaying all notes 
+    app.get("/expense/:userid", async function (req,res){
+        const expenseRecord = await findExpenseById(req.params.userid);
+        res.json({expenseRecord})
+    }); 
+
+    // Deleting all notes
 
     // app.use('/users', userRoutes);
 }
