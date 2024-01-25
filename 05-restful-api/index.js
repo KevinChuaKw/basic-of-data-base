@@ -91,6 +91,7 @@ async function main() {
     })
 
     // updating the database
+    // Tested and works
     app.put("/expense/:expenseRecordId", async function (req,res){
         const user = req.body.user;
         const expenseAmount = req.body.expenseAmount;
@@ -112,16 +113,20 @@ async function main() {
                 "tags": tags
             }
         }); 
-
-        res.json(results); 
+        
+        res.json({
+            "message":"Updated record successfully", 
+            results
+        });
     })
 
     // Adding note within the entry (embeding)
+    // 
     app.post("/expense/:expenseid/note", async function (req,res){
-        const userId = req.body.userid;
+        const expenseId = req.body.userId;
         const noteContent = req.body.noteContent;
         const response = await db.collection(COLLECTION).updateOne({
-            "_id": new ObjectId(userId)
+            "_id": new ObjectId(expenseId)
         },{
             "$push":{
                 "notes": {
@@ -137,12 +142,28 @@ async function main() {
     })
 
     // displaying all notes 
+    // 
     app.get("/expense/:userid", async function (req,res){
         const expenseRecord = await findExpenseById(req.params.userid);
         res.json({expenseRecord})
     }); 
 
-    // Deleting all notes
+    // Deleting notes
+    app.delete("/expense/:expenseid/note/:noteid", async function (req,res){
+        const {userId, noteId} = req.params; 
+        const results = await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(userId) 
+        },{
+            "$pull":{
+                "notes":{
+                    "_id":new ObjectId(noteId)
+                }
+            }
+        })
+    })
+
+
+    // Updating notes
 
     // app.use('/users', userRoutes);
 }
