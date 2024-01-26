@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb');
 const app = express(); 
 app.use(express.json());
 app.use(cors());
+app.use('/users', require('./routes/users'));
 require("dotenv").config();
 const { connect } = require("./mongoUtil") // the './' is very important you need put this
 const { authenticateToken } = require('./middleware');
@@ -41,41 +42,47 @@ async function main() {
         const user = req.body.user;
         const expenseAmount = req.body.expenseAmount;
         
-        if (!user){
-            res.status(400); 
-            res.json({
-                "error":"Please enter user"
-            })
-            return; 
-        }
-        if (isNaN(expenseAmount)|| expenseAmount < 0) {
-            res.json(400); 
-            res.json({
-                'error':"Please enter expense amount correctly"
-            }); 
-            return; 
-        } 
-        
-        let tags = req.body.tags; 
-        if (tags){
-            if(!Array.isArray(tags)){
-                tags= [tags]; 
+        try {
+            if (!user){
+                res.status(400); 
+                res.json({
+                    "error":"Please enter user"
+                })
+                return; 
             }
-        } else {
-            tags=[]; 
-        }
-    
-        const results = await db.collection(COLLECTION).insertOne({
-            "user": user,
-            "expenseAmount": Number(expenseAmount),
-            "tags": tags
-        })
+            if (isNaN(expenseAmount)|| expenseAmount < 0) {
+                res.json(400); 
+                res.json({
+                    'error':"Please enter expense amount correctly"
+                }); 
+                return; 
+            } 
+            
+            let tags = req.body.tags; 
+            if (tags){
+                if(!Array.isArray(tags)){
+                    tags= [tags]; 
+                }
+            } else {
+                tags=[]; 
+            }
         
-        res.json({
-            "message":"Added successfully", 
-            "results": results
-        })
-
+            const results = await db.collection(COLLECTION).insertOne({
+                "user": user,
+                "expenseAmount": Number(expenseAmount),
+                "tags": tags
+            })
+            
+            res.json({
+                "message":"Added successfully", 
+                "results": results
+            })
+        } catch (e) {
+            res.status(500).send({
+                error: "Internal server error. Please contact admin"
+            });
+            console.log(e); 
+        }
     }); 
 
     // deleting from the data base
@@ -137,22 +144,23 @@ async function main() {
         })
         res.json({
             'message':"note added successfully",
-            results: response
+            "results": response
         })
     })
 
     // displaying all notes 
     // 
-    app.get("/expense/:userid", async function (req,res){
-        const expenseRecord = await findExpenseById(req.params.userid);
+    app.get("/expense/:expenseid", async function (req,res){
+        const expenseRecord = await findExpenseById(req.params.expenseid);
         res.json({expenseRecord})
     }); 
 
     // Deleting notes
+    // 
     app.delete("/expense/:expenseid/note/:noteid", async function (req,res){
-        const {userId, noteId} = req.params; 
+        const {expenseId, noteId} = req.params; 
         const results = await db.collection(COLLECTION).updateOne({
-            "_id": new ObjectId(userId) 
+            "_id": new ObjectId(expenseId) 
         },{
             "$pull":{
                 "notes":{
@@ -160,11 +168,29 @@ async function main() {
                 }
             }
         })
+        res.json({
+            'message':"note deleted successfully",
+            "results": response
+        })
     })
 
-
     // Updating notes
-
+    // 
+    app.put('/expense/:expenseid/note/:noteid', async function (req,res){
+        const {expenseId, noteId} = req.params; 
+        const results = await db.collection(COLLECTION).updateOne({
+            "_id": new ObjectId(expenseId), 
+            "notes._id": new ObjectId(noteId)
+        },{
+            "$set": {
+                'notes.$.content': req.body.noteContent
+            }
+        })
+        res.json({
+            'message':"note updated successfully",
+            "results": response
+        })
+    })
     // app.use('/users', userRoutes);
 }
 
