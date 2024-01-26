@@ -1,11 +1,10 @@
 const express = require("express");
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
-// const userRoutes = require('./users'); 
+const userRoutes = require('./users'); 
 const app = express(); 
 app.use(express.json());
 app.use(cors());
-app.use('/users', require('./routes/users'));
 require("dotenv").config();
 const { connect } = require("./mongoUtil") // the './' is very important you need put this
 const { authenticateToken } = require('./middleware');
@@ -191,7 +190,12 @@ async function main() {
             "results": response
         })
     })
-    // app.use('/users', userRoutes);
+    
+    // register the user routes
+    // if the url sent to Express starts with '/users',
+    // then the remaining framgent is looked for inside
+    // userRoutes
+    app.use('/users', userRoutes);
 }
 
 main();

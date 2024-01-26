@@ -1592,6 +1592,11 @@ micromatch@^3.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
+middlewares@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/middlewares/-/middlewares-0.1.1.tgz#73e455032595b8c95dc364eff6e89d971f088520"
+  integrity sha512-UckcpnBSuG4hK4nQJn/yVy8AbCiZJI5pfJus1jwJqWd5ttpqGymX5Yhhu+zNzG0/OhpXF1N6pzATCBds7G6OMA==
+
 mime-db@1.52.0:
   version "1.52.0"
   resolved "https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz"
