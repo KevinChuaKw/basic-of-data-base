@@ -3,7 +3,7 @@ const { getDB } = require('./mongoUtil');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
-const { authenticateToken } = require('./middlewares');
+const { authenticateToken } = require('./middleware');
 require('dotenv').config();
 
 // create a new router object
@@ -18,7 +18,7 @@ router.post('/', async function(req,res){
     const result = await db.collection('users').insertOne({
         "email": req.body.email,
         "password": await bcrypt.hash(req.body.password, 12) // the number at the back is to signify how many times it will hash
-                                                                // the longer the better
+                                                             // the longer the better
     })    
     res.json({
         "message":"Success, user added",
@@ -78,7 +78,6 @@ router.get('/profile', authenticateToken, async function (req, res) {
     })
 
 })
-
 
 // make sure to export the router objects
 // so that other files liek index.js can use it

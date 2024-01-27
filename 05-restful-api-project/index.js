@@ -24,7 +24,7 @@ async function main() {
 
     // Reading from the databaseName
     // Tested and works
-    app.get('/showAll_expenses', async function (req, res) {
+    app.get('/showAll_expenses', authenticateToken, async function (req, res) {
 
         const expenseRecords = await db.collection(COLLECTION)
             .find()
@@ -34,6 +34,16 @@ async function main() {
             expenseRecords
         })
     });
+
+    app.get("/expenses/:expenseRecordId", async function (req,res){
+        const expenseRecordId = new ObjectId(req.params.expenseRecordId); 
+        const record = await db.collection(COLLECTION).findOne({
+            _id: expenseRecordId
+        })
+        res.json({
+            record
+        }); 
+    })
 
     // Adding to the database 
     // Tested and works 
@@ -127,9 +137,9 @@ async function main() {
     })
 
     // Adding note within the entry (embeding)
-    // 
+    // Tested and working
     app.post("/expense/:expenseid/note", async function (req,res){
-        const expenseId = req.body.expenseId;
+        const expenseId = req.params.expenseid;
         const noteContent = req.body.noteContent;
         const response = await db.collection(COLLECTION).updateOne({
             "_id": new ObjectId(expenseId)
@@ -143,7 +153,7 @@ async function main() {
         })
         res.json({
             'message':"note added successfully",
-            "results": response
+            response
         })
     })
 
